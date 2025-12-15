@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTF Analytics - Independent macOS App (Not Affiliated with Orangetheory Fitness®)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --otf-orange: #FF6600;
+            --dark-bg: #1a1a1a;
+            --darker-bg: #0f0f0f;
+            --light-bg: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --border-color: #333333;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--darker-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            position: relative;
+            text-align: center;
+            padding: 80px 20px 70px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 50%, #1a1a1a 100%);
+            border-bottom: 2px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--otf-orange), transparent);
+            opacity: 0.6;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: var(--otf-orange);
+            opacity: 0.8;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .logo-container {
+            display: inline-block;
+            margin-bottom: 25px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .logo {
+            font-size: 72px;
+            line-height: 1;
+            display: inline-block;
+            filter: drop-shadow(0 4px 8px rgba(255, 102, 0, 0.3));
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        h1 {
+            font-size: 52px;
+            margin-bottom: 15px;
+            color: var(--otf-orange);
+            font-weight: 700;
+            letter-spacing: -1px;
+            text-shadow: 0 2px 10px rgba(255, 102, 0, 0.2);
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .subtitle {
+            font-size: 22px;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .tagline {
+            font-size: 16px;
+            color: var(--text-secondary);
+            opacity: 0.8;
+            margin-bottom: 40px;
+            font-style: italic;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease-out 0.8s both;
+        }
+
+        .nav a {
+            color: var(--otf-orange);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 12px 28px;
+            border: 2px solid var(--otf-orange);
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 102, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav a:hover::before {
+            left: 100%;
+        }
+
+        .nav a:hover {
+            background: var(--otf-orange);
+            color: var(--dark-bg);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 102, 0, 0.4);
+        }
+
+        .nav a:active {
+            transform: translateY(0);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        section {
+            background: var(--dark-bg);
+            padding: 40px;
+            margin: 30px 0;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        h2 {
+            font-size: 32px;
+            color: var(--otf-orange);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        h3 {
+            font-size: 24px;
+            color: var(--text-primary);
+            margin: 30px 0 15px 0;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: var(--text-secondary);
+        }
+
+        ul {
+            margin: 15px 0 15px 30px;
+            color: var(--text-secondary);
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .highlight {
+            color: var(--otf-orange);
+            font-weight: 600;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: var(--light-bg);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .feature-card h4 {
+            color: var(--otf-orange);
+            margin-bottom: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border-color);
+            margin-top: 60px;
+        }
+
+        .last-updated {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .disclaimer-box {
+            background: var(--light-bg);
+            border: 2px solid var(--otf-orange);
+            border-left: 6px solid var(--otf-orange);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 30px 0;
+            background: linear-gradient(135deg, rgba(255, 102, 0, 0.1) 0%, rgba(255, 102, 0, 0.05) 100%);
+        }
+
+        .disclaimer-box strong {
+            color: var(--otf-orange);
+            font-size: 18px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .disclaimer-box p {
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .trademark {
+            font-size: 0.7em;
+            vertical-align: super;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 60px 20px 50px;
+            }
+
+            .logo {
+                font-size: 56px;
+            }
+
+            h1 {
+                font-size: 36px;
+            }
+
+            .subtitle {
+                font-size: 18px;
+            }
+
+            .tagline {
+                font-size: 14px;
+            }
+
+            .container {
+                padding: 20px 15px;
+            }
+
+            section {
+                padding: 25px;
+            }
+
+            .nav {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .nav a {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo-container">
+                <div class="logo">🍊</div>
+            </div>
+            <h1>OTF Analytics</h1>
+            <p class="subtitle">Deep insights into your Orangetheory Fitness<sup class="trademark">®</sup> workout data</p>
+            <p style="font-size: 12px; color: var(--text-secondary); margin-top: 10px;">Not affiliated with Orangetheory Fitness<sup class="trademark">®</sup></p>
+            <p class="tagline">Analyze your workout data, track performance trends, and compare periods</p>
+            <nav class="nav">
+                <a href="#support">Support</a>
+                <a href="#privacy">Privacy Policy</a>
+                <a href="#terms">Terms & Conditions</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Important Disclaimer -->
+        <div class="disclaimer-box">
+            <strong>⚠️ Important Disclaimer</strong>
+            <p><strong>OTF Analytics is NOT affiliated with, endorsed by, or sponsored by Orangetheory Fitness<sup class="trademark">®</sup>.</strong></p>
+            <p>This is an independent, third-party application created by an independent developer. OTF Analytics is not connected to, associated with, or authorized by Orangetheory Fitness<sup class="trademark">®</sup> in any way.</p>
+            <p>The app accesses publicly available workout data through the Orangetheory Fitness<sup class="trademark">®</sup> API for the sole purpose of providing analytics features to users. All trademarks, service marks, and trade names are the property of their respective owners.</p>
+            <p><strong>"Orangetheory Fitness<sup class="trademark">®</sup>" and "OTF<sup class="trademark">®</sup>" are registered trademarks of Orangetheory Fitness Franchisor, LLC.</strong> OTF Analytics uses these terms only to identify the fitness service provider and does not claim any rights to these trademarks.</p>
+        </div>
+
+        <!-- App Overview Section -->
+        <section id="about">
+            <h2>OTF Analytics</h2>
+            <p style="font-size: 18px; margin-bottom: 30px; color: var(--text-primary);">A powerful macOS app that provides deep insights into your Orangetheory Fitness<sup class="trademark">®</sup> workout data. Analyze your performance, track trends, and make data-driven decisions about your training.</p>
+
+            <h3>Key Features</h3>
+            
+            <div class="feature-list">
+                <div class="feature-card">
+                    <h4>📊 Performance Dashboard</h4>
+                    <p>Comprehensive overview of your workout metrics including calories, splat points, heart rate zones, and consistency metrics. View your data across customizable date ranges.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📈 Period Comparison</h4>
+                    <p>Compare your performance across different time periods to see if you're training smarter, not just harder. Identify trends and patterns in your workout data.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🎯 Splat Zone Analysis</h4>
+                    <p>Track your time in the optimal 12-20 splat zone and identify overtraining risks. Get insights on whether you're consistently hitting your target zones.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🏃 Equipment Performance</h4>
+                    <p>Detailed metrics for treadmill and rower performance including distance, pace, watts, and cadence. Understand how you perform on different equipment.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📅 Long-term Trends</h4>
+                    <p>Visualize your performance evolution over weeks, months, and quarters. See if you're improving, plateauing, or need to adjust your training approach.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🤖 AI-Powered Insights</h4>
+                    <p>On supported devices, Apple Intelligence generates personalized insights and recommendations based on your workout history. All processing happens on-device for privacy.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🔒 Privacy First</h4>
+                    <p>All data processing happens locally on your Mac. Your workout data never leaves your device. Credentials are stored securely using macOS Keychain.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>💻 macOS Native</h4>
+                    <p>Built specifically for macOS with a native interface optimized for larger screens. Perfect for deep analysis sessions with side-by-side comparisons and detailed charts.</p>
+                </div>
+            </div>
+
+            <h3>What You Can Analyze</h3>
+            <ul>
+                <li><span class="highlight">Training consistency:</span> Are you showing up regularly and staying in the optimal zones?</li>
+                <li><span class="highlight">Performance patterns:</span> Do you perform better at certain times, with specific coaches, or in particular class formats?</li>
+                <li><span class="highlight">Progress tracking:</span> How has your performance changed over time? Are you improving or plateauing?</li>
+                <li><span class="highlight">Overtraining detection:</span> Identify streaks of high-intensity days that might indicate overtraining risk.</li>
+                <li><span class="highlight">Class format optimization:</span> Compare your performance across 2G, 3G, Tread 50, and other class types to optimize your booking strategy.</li>
+            </ul>
+
+            <h3>How It Works</h3>
+            <p><strong>OTF Analytics is an independent application and is not affiliated with Orangetheory Fitness<sup class="trademark">®</sup>.</strong> The app connects to your Orangetheory Fitness<sup class="trademark">®</sup> account through the publicly available API to retrieve your workout data. Your workout data is downloaded and processed entirely on your Mac, giving you complete control over your information while providing powerful analytics capabilities.</p>
+            <p><em>Note: This app is not an official Orangetheory Fitness<sup class="trademark">®</sup> product and is provided as-is by an independent developer. The app relies entirely on the availability of the Orangetheory Fitness<sup class="trademark">®</sup> API.</em></p>
+        </section>
+
+        <!-- Support Section -->
+        <section id="support">
+            <h2>Support</h2>
+            <p style="font-size: 18px; margin-bottom: 30px; color: var(--text-primary);">Have questions about OTF Analytics? We're here to help!</p>
+
+            <h3>Get Help</h3>
+            <p>If you have questions, need assistance, or want to report an issue with OTF Analytics, please don't hesitate to reach out.</p>
+            
+            <div class="feature-card" style="margin: 30px 0; background: linear-gradient(135deg, rgba(255, 102, 0, 0.1) 0%, rgba(255, 102, 0, 0.05) 100%); border: 2px solid var(--otf-orange);">
+                <h4 style="color: var(--otf-orange); margin-bottom: 15px;">📧 Contact Support</h4>
+                <p style="margin-bottom: 15px; color: var(--text-primary);">For questions, bug reports, feature requests, or any other inquiries about OTF Analytics, please email us:</p>
+                <p style="margin: 20px 0;">
+                    <a id="support-email" href="#" style="color: var(--otf-orange); font-size: 18px; font-weight: 600; text-decoration: none; border-bottom: 2px solid var(--otf-orange); padding-bottom: 2px;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+                        <!-- Email will be inserted by JavaScript -->
+                    </a>
+                </p>
+                <p style="font-size: 14px; color: var(--text-secondary); margin-top: 15px;">We typically respond within 24-48 hours.</p>
+            </div>
+
+            <h3>Before Contacting Support</h3>
+            <p>To help us assist you more effectively, please check the following:</p>
+            <ul>
+                <li><span class="highlight">App Help Section:</span> Review the Help section within the app for answers to common questions</li>
+                <li><span class="highlight">Privacy Policy & Terms:</span> Check the Privacy Policy and Terms & Conditions sections below for information about data handling and app usage</li>
+                <li><span class="highlight">System Requirements:</span> Ensure your Mac meets the minimum requirements (macOS 12.0 or later, Apple Silicon recommended for Apple Intelligence features)</li>
+                <li><span class="highlight">Account Access:</span> Verify that you can log in to your Orangetheory Fitness<sup class="trademark">®</sup> account using the official OTF app or website</li>
+            </ul>
+
+            <h3>What to Include in Your Email</h3>
+            <p>When contacting support, please include:</p>
+            <ul>
+                <li>A clear description of your question or issue</li>
+                <li>Your macOS version (e.g., macOS 14.0, macOS 15.0)</li>
+                <li>OTF Analytics version (if known - found in the app's About section)</li>
+                <li>Steps to reproduce the issue (if reporting a bug)</li>
+                <li>Screenshots (if applicable and helpful)</li>
+            </ul>
+
+            <div class="disclaimer-box" style="margin-top: 30px;">
+                <strong>⚠️ Important Note</strong>
+                <p><strong>OTF Analytics is an independent third-party application and is not affiliated with Orangetheory Fitness<sup class="trademark">®</sup>.</strong></p>
+                <p>If you have questions about your Orangetheory Fitness<sup class="trademark">®</sup> membership, billing, class schedules, or other OTF-related services, please contact Orangetheory Fitness<sup class="trademark">®</sup> directly through their official channels.</p>
+                <p>OTF Analytics support can only assist with questions related to the OTF Analytics app itself, including features, data analysis, privacy, and technical issues.</p>
+            </div>
+        </section>
+
+        <!-- Privacy Policy Section -->
+        <section id="privacy">
+            <h2>Privacy Policy</h2>
+            <p class="last-updated">Last updated: <span id="privacy-date"></span></p>
+
+            <h3>Information We Access</h3>
+            <p><strong>OTF Analytics is not affiliated with Orangetheory Fitness<sup class="trademark">®</sup>.</strong> The app accesses the following types of data from your Orangetheory Fitness<sup class="trademark">®</sup> account:</p>
+            <ul>
+                <li><strong>Health and Fitness Data:</strong> Workout dates, calories burned, splat points, heart rate zone data, workout duration</li>
+                <li><strong>Equipment Performance Data:</strong> Treadmill metrics (distance, pace, incline), rower metrics (distance, watts, split times, cadence)</li>
+                <li><strong>Account Information:</strong> Your name and home studio location (for display purposes only)</li>
+                <li><strong>Authentication Credentials:</strong> Your Orangetheory Fitness<sup class="trademark">®</sup> login credentials (only if you choose to save them, stored securely in macOS Keychain)</li>
+            </ul>
+            <p><strong>Important:</strong> OTF Analytics processes all data locally on your device. We do not collect, store, or transmit any personal information to external servers operated by OTF Analytics.</p>
+            <p>The app accesses your Orangetheory Fitness<sup class="trademark">®</sup> account data solely for the purpose of displaying your workout statistics and performance metrics within the application.</p>
+            <p><strong>Disclaimer:</strong> OTF Analytics is an independent application and is not connected to, endorsed by, or sponsored by Orangetheory Fitness<sup class="trademark">®</sup>.</p>
+
+            <h3>Data Storage and Security</h3>
+            <p>All data processing occurs locally on your Mac. Your workout information is stored securely on your device:</p>
+            <ul>
+                <li><strong>Credentials:</strong> If you choose to save your login credentials, they are stored securely using the macOS Keychain, which uses industry-standard encryption</li>
+                <li><strong>Workout Data:</strong> Cached workout data is stored locally on your Mac for faster access. This data can be cleared at any time using the "Clear Cache" option in the app</li>
+                <li><strong>No External Storage:</strong> No data is sent to external servers or third-party services operated by OTF Analytics</li>
+            </ul>
+            <p>We implement appropriate technical and organizational security measures to protect your data, including local encryption and secure storage mechanisms provided by macOS.</p>
+
+            <h3>How We Use Your Data</h3>
+            <p>Your workout data is used exclusively to:</p>
+            <ul>
+                <li>Display performance metrics and statistics within the app</li>
+                <li>Generate insights and comparisons between time periods</li>
+                <li>Provide personalized recommendations and trend analysis</li>
+                <li>Enable period-to-period performance comparisons</li>
+            </ul>
+            <p>All analysis is performed locally on your device. Your data is <strong>never</strong> used for:</p>
+            <ul>
+                <li>Advertising or marketing purposes</li>
+                <li>Sale to third parties</li>
+                <li>Sharing with other users or services</li>
+                <li>Any purpose other than providing the app's core functionality</li>
+            </ul>
+
+            <h3>Apple Intelligence</h3>
+            <p>On supported devices (Apple Silicon Macs running macOS 15.0 or later), OTF Analytics uses Apple Intelligence to generate AI-powered insights about your workout performance.</p>
+            <p>When Apple Intelligence is available:</p>
+            <ul>
+                <li>Your workout data (calories, splat points, consistency metrics, and equipment performance) is processed locally using on-device AI models</li>
+                <li>No workout data is sent to Apple or any external servers</li>
+                <li>All processing occurs entirely on your device</li>
+                <li>Apple Intelligence generates personalized insights, recommendations, and trend analysis based on your workout history</li>
+            </ul>
+            <p>Apple Intelligence processing is automatic when your hardware supports it. You can identify Apple Intelligence insights in the app by the "Apple Intelligence Insights" section in the Dashboard.</p>
+            <p>For more information about Apple Intelligence privacy, please refer to Apple's Privacy Policy.</p>
+
+            <h3>Data Sharing and Third-Party Services</h3>
+            <p><strong>We do not sell, rent, or share your data with third parties.</strong></p>
+            <p>OTF Analytics does not integrate with:</p>
+            <ul>
+                <li>Third-party analytics services</li>
+                <li>Advertising networks</li>
+                <li>Data collection platforms</li>
+                <li>Social media platforms</li>
+                <li>Data brokers</li>
+            </ul>
+            <p>The app communicates only with Orangetheory Fitness<sup class="trademark">®</sup> servers to retrieve your workout data through the publicly available API. This communication is necessary for the app's core functionality. <strong>OTF Analytics is not affiliated with Orangetheory Fitness<sup class="trademark">®</sup> and is an independent application.</strong></p>
+            <p><strong>OTF Analytics is not affiliated with Orangetheory Fitness<sup class="trademark">®</sup>.</strong> Your data is not shared with any other third parties, including Apple (except as described in the Apple Intelligence section below).</p>
+
+            <h3>Your Privacy Rights</h3>
+            <p>You have full control over your data and the following rights:</p>
+            <ul>
+                <li><strong>Right to Access:</strong> You can view all your data within the app at any time</li>
+                <li><strong>Right to Delete:</strong> You can delete your saved credentials at any time by unchecking "Remember credentials" when logging in, or by signing out</li>
+                <li><strong>Right to Data Deletion:</strong> You can clear all cached workout data by using the "Clear Cache" option in the Data menu (menu bar). This removes all locally stored workout data and equipment details from your device</li>
+                <li><strong>Right to Stop Data Collection:</strong> You can stop using the app at any time, which will prevent further data access</li>
+                <li><strong>Right to Withdraw Consent:</strong> You can revoke access to your Orangetheory Fitness<sup class="trademark">®</sup> account at any time by signing out or uninstalling the app</li>
+            </ul>
+            <p>Cached data refers to workout information that has been downloaded from your Orangetheory Fitness<sup class="trademark">®</sup> account and stored locally on your Mac for faster access. This includes workout dates, calories, splat points, heart rate data, and equipment metrics (treadmill and rower details). Clearing this cache will remove all stored workout data, but you can re-download it by refreshing your data.</p>
+            
+            <h3>Data Retention</h3>
+            <p>Your data is retained only as long as necessary to provide the app's functionality:</p>
+            <ul>
+                <li><strong>Cached Workout Data:</strong> Stored locally on your device until you clear the cache or uninstall the app</li>
+                <li><strong>Credentials:</strong> Stored in macOS Keychain until you delete them or sign out</li>
+                <li><strong>No Server-Side Retention:</strong> Since we don't operate any servers, there is no server-side data retention</li>
+            </ul>
+            <p>When you delete cached data or uninstall the app, all locally stored data is removed from your device.</p>
+
+            <h3>Children's Privacy</h3>
+            <p>OTF Analytics is not intended for use by children under the age of 13. Since OTF Analytics does not collect, store, or transmit any data to external servers, and all data processing occurs locally on the user's device, we do not receive or have access to any personal information from children or any users. The app requires an Orangetheory Fitness<sup class="trademark">®</sup> account to function, and users must authenticate using their own Orangetheory Fitness<sup class="trademark">®</sup> credentials.</p>
+            
+            <h3>Changes to This Privacy Policy</h3>
+            <p>We may update this Privacy Policy from time to time. We will notify you of any changes by updating the "Last updated" date at the top of this Privacy Policy. You are advised to review this Privacy Policy periodically for any changes.</p>
+            <p>Your continued use of the app after any changes to this Privacy Policy constitutes your acceptance of the updated policy.</p>
+            
+            <h3>Contact Us</h3>
+            <p>If you have questions, concerns, or requests regarding this Privacy Policy or how your data is handled, please:</p>
+            <ul>
+                <li>Review the app's Help section for additional information</li>
+                <li>Contact the developer through the app's support channels</li>
+                <li>Use the contact information provided in the App Store listing</li>
+            </ul>
+            <p>We will respond to your privacy-related inquiries in a timely manner.</p>
+        </section>
+
+        <!-- Terms and Conditions Section -->
+        <section id="terms">
+            <h2>Terms and Conditions</h2>
+            <p class="last-updated">Last updated: <span id="terms-date"></span></p>
+
+            <h3>Acceptance of Terms</h3>
+            <p>By using OTF Analytics, you agree to be bound by these Terms and Conditions. If you do not agree to these terms, please do not use the application.</p>
+
+            <h3>Use License</h3>
+            <p>OTF Analytics is provided for personal, non-commercial use. You may use the app to view and analyze your Orangetheory Fitness<sup class="trademark">®</sup> workout data.</p>
+            <p><strong>OTF Analytics is not affiliated with, endorsed by, or sponsored by Orangetheory Fitness<sup class="trademark">®</sup>.</strong></p>
+            <p>You may not:</p>
+            <ul>
+                <li>Use the app for any commercial purpose</li>
+                <li>Attempt to reverse engineer or modify the application</li>
+                <li>Use the app in any way that violates applicable laws or regulations</li>
+            </ul>
+
+            <h3>Account Responsibility</h3>
+            <p>You are responsible for maintaining the confidentiality of your Orangetheory Fitness<sup class="trademark">®</sup> account credentials. OTF Analytics stores credentials securely using macOS Keychain, but you are responsible for the security of your device.</p>
+            <p>You agree to use only your own Orangetheory Fitness<sup class="trademark">®</sup> account credentials and not to access accounts belonging to others.</p>
+            <p><strong>OTF Analytics is an independent application and is not connected to Orangetheory Fitness<sup class="trademark">®</sup>.</strong></p>
+
+            <h3>Third-Party Services and API Dependencies</h3>
+            <p><strong>OTF Analytics is NOT affiliated with, endorsed by, or sponsored by Orangetheory Fitness<sup class="trademark">®</sup>.</strong> This is an independent, third-party application that is not connected to Orangetheory Fitness<sup class="trademark">®</sup> in any way.</p>
+            <p>The app is an independent tool that <span class="highlight">completely relies on access to the public API</span> provided by Orangetheory Fitness<sup class="trademark">®</sup> to retrieve workout data.</p>
+            <p>Your use of Orangetheory Fitness<sup class="trademark">®</sup> services is subject to their terms and conditions.</p>
+            <p><strong>Important:</strong> OTF Analytics cannot be responsible if the data provided through the API is not accurate, incomplete, or if the API service is stopped, modified, or becomes unavailable. The app depends entirely on the availability and reliability of the Orangetheory Fitness<sup class="trademark">®</sup> API.</p>
+            <p><strong>Trademark Notice:</strong> "Orangetheory Fitness<sup class="trademark">®</sup>" and "OTF<sup class="trademark">®</sup>" are registered trademarks of Orangetheory Fitness Franchisor, LLC. OTF Analytics uses these terms only to identify the fitness service provider and does not claim any rights to these trademarks.</p>
+
+            <h3>Service Availability</h3>
+            <p>OTF Analytics is provided <span class="highlight">free of charge</span>. The service may be temporarily or completely interrupted, discontinued, or the app may be removed from the App Store at any time without notice if:</p>
+            <ul>
+                <li>The app cannot access the Orangetheory Fitness<sup class="trademark">®</sup> servers where the data is stored</li>
+                <li>The public API becomes unavailable, modified, or restricted</li>
+                <li>Network connectivity issues prevent data retrieval</li>
+                <li>Orangetheory Fitness<sup class="trademark">®</sup> changes or discontinues API access</li>
+                <li>The developer decides to discontinue or remove the app from the App Store</li>
+                <li>Apple removes the app from the App Store for any reason</li>
+                <li>Technical issues, legal requirements, or other factors beyond our control</li>
+            </ul>
+            <p><strong>OTF Analytics makes no guarantees about service availability, uptime, or continued availability.</strong> The app may be unavailable, discontinued, or removed from the App Store at any time without notice due to factors beyond our control or at the developer's discretion.</p>
+            <p>You acknowledge that the app is provided on an "as available" basis and that the developer has no obligation to maintain, update, or continue providing the app or its services. The developer reserves the right to discontinue the app or remove it from the App Store at any time without prior notice to users.</p>
+
+            <h3>Disclaimer</h3>
+            <p>OTF Analytics is provided "as is" without warranties of any kind. The app makes no guarantees about the accuracy, completeness, or reliability of the data displayed, as the data is sourced from third-party APIs over which we have no control.</p>
+            <p>The insights and recommendations provided by the app are for informational purposes only and should not replace professional fitness or medical advice.</p>
+
+            <h3>Limitation of Liability</h3>
+            <p>OTF Analytics shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of the application.</p>
+
+            <h3>Changes to Terms</h3>
+            <p>These Terms and Conditions may be updated from time to time. Continued use of the app after changes constitutes acceptance of the updated terms.</p>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 OTF Analytics. All rights reserved.</p>
+        <p style="margin-top: 10px; font-size: 14px;"><strong>OTF Analytics is NOT affiliated with, endorsed by, or sponsored by Orangetheory Fitness<sup class="trademark">®</sup>.</strong></p>
+        <p style="margin-top: 10px; font-size: 12px; color: var(--text-secondary);">"Orangetheory Fitness<sup class="trademark">®</sup>" and "OTF<sup class="trademark">®</sup>" are registered trademarks of Orangetheory Fitness Franchisor, LLC. OTF Analytics is an independent application and does not claim any rights to these trademarks.</p>
+    </footer>
+
+    <script>
+        // Set current date for last updated
+        const today = new Date();
+        const dateString = today.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        document.getElementById('privacy-date').textContent = dateString;
+        document.getElementById('terms-date').textContent = dateString;
+
+        // Obfuscate email address to protect from spammers
+        (function() {
+            // Split email into parts to make it harder for scrapers
+            const emailParts = ['christophe', '@', 'wimsightlabs', '.', 'com'];
+            const emailAddress = emailParts.join('');
+            const emailLink = document.getElementById('support-email');
+            
+            if (emailLink) {
+                emailLink.textContent = emailAddress;
+                emailLink.href = 'mailto:' + emailAddress + '?subject=OTF Analytics Support';
+            }
+        })();
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
